@@ -1,0 +1,9 @@
+applications:
+- path: .
+  memory: 128M
+  instances: 1
+  domain: mybluemix.net
+  name: kartees-landing-page-services
+  host: kartees-landing-page-services
+  disk_quota: 1024M
+  buildpack: python_buildpack
