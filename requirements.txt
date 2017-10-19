@@ -1,1 +1,15 @@
-Flask==0.10.1
+Collecting flask-cors
+  Downloading Flask_Cors-3.0.3-py2.py3-none-any.whl
+Requirement already up-to-date: Flask>=0.9 in /Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages (from flask-cors)
+Collecting Six (from flask-cors)
+  Downloading six-1.11.0-py2.py3-none-any.whl
+Requirement already up-to-date: itsdangerous>=0.21 in /Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages (from Flask>=0.9->flask-cors)
+Requirement already up-to-date: Werkzeug>=0.7 in /Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages (from Flask>=0.9->flask-cors)
+Requirement already up-to-date: Jinja2>=2.4 in /Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages (from Flask>=0.9->flask-cors)
+Requirement already up-to-date: click>=2.0 in /Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages (from Flask>=0.9->flask-cors)
+Requirement already up-to-date: MarkupSafe>=0.23 in /Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages (from Jinja2>=2.4->Flask>=0.9->flask-cors)
+Installing collected packages: Six, flask-cors
+  Found existing installation: six 1.10.0
+    Uninstalling six-1.10.0:
+      Successfully uninstalled six-1.10.0
+Successfully installed Six-1.11.0 flask-cors-3.0.3

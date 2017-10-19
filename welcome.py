@@ -13,9 +13,46 @@
 # limitations under the License.
 
 import os
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
+from cloudant.client import Cloudant
+import json
+from flask_cors import CORS
+ 
+if 'VCAP_SERVICES' in os.environ:
+
+     cloudant_service = json.loads(os.environ['VCAP_SERVICES'])['cloudantNoSQLDB'][0]
+     credentials = cloudant_service['credentials']
+
+else:
+    from credentials import *
+    credentials = cloudant_credentials
+
+
+client = Cloudant(credentials['username'], credentials['password'], url="https://%s"%credentials['host'])
+# Connect to the account
+client.connect()
 
 app = Flask(__name__)
+CORS(app)
+
+@app.route('/new-email',  methods=['POST'])
+def new_email():
+    
+    print (request.url)
+    email = request.form['email']
+    app_type="test"
+    #app_type = request.form['app_type']
+
+    db = client['%s_emails' %app_type]
+
+    doc = db["landing_page_emails"]
+
+    doc['emails'].append(str(email))
+
+    doc.save()
+
+    return jsonify({"db_type":app_type, "address":email, "message":"Email %s added to DB" %email})
+
 
 @app.route('/')
 def Welcome():
@@ -40,6 +77,6 @@ def SayHello(name):
     }
     return jsonify(results=message)
 
-port = os.getenv('PORT', '5000')
+port = os.getenv('PORT', '5001')
 if __name__ == "__main__":
-	app.run(host='0.0.0.0', port=int(port))
+	app.run(host='0.0.0.0', port=int(port), debug=True)
