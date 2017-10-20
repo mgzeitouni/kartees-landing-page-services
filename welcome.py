@@ -42,15 +42,12 @@ def after_request(response):
   response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
   return response
 
-
-
-
 @app.route('/new-email',  methods=['POST', 'OPTIONS'])
 def new_email():
 
     app_type="test"
     
-    if 'kartees.com' in request.headers.origin:
+    if 'Origin' in request.headers.keys() and 'kartees.com' in request.headers['Origin']:
         app_type="prod"
 
     email = request.form['email']
