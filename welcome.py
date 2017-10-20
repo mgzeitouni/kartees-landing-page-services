@@ -37,11 +37,13 @@ CORS(app)
 
 @app.route('/new-email',  methods=['POST'])
 def new_email():
-    
-    print (request.url)
-    email = request.form['email']
+
     app_type="test"
-    #app_type = request.form['app_type']
+    
+    if 'kartees.com' in request.headers.origin:
+        app_type="prod"
+
+    email = request.form['email']
 
     db = client['%s_emails' %app_type]
 
