@@ -1,7 +1,9 @@
+
+cloudant==2.6.0
+colorama==0.3.7
+docutils==0.14
 Flask==0.12.2
 
 Flask-Cors==3.0.3
-
 requests==2.18.4
 requirements==0.1
-
