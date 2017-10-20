@@ -43,9 +43,9 @@ def after_request(response):
   return response
 
 
-  
 
-@app.route('/new-email',  methods=['POST'])
+
+@app.route('/new-email',  methods=['POST', 'OPTIONS'])
 def new_email():
 
     app_type="test"
