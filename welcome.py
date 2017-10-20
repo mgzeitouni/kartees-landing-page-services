@@ -37,6 +37,8 @@ client.connect()
 app = Flask(__name__)
 CORS(app)
 
+cache = {"requests":0, "data":[]}
+
 @app.route('/new-email',  methods=['POST', 'OPTIONS'])
 @cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def new_email():
@@ -44,6 +46,8 @@ def new_email():
     status = False
 
     response = {}
+
+    cache['requests']+=1
 
     try:
         app_type="test"
@@ -53,11 +57,19 @@ def new_email():
 
         email = request.form['email']
 
+        timestamp = request.form['timestamp']
+
+        new_data = {"timestamp":timestamp,"email":str(email), "app_type":app_type}
+
+        cache['data'].append(new_data)
+
         db = client['%s_emails' %app_type]
 
         doc = db["landing_page_emails"]
 
-        doc['emails'].append(str(email))
+        doc['emails'].append(new_data)
+
+        doc['requests']+=1
 
         doc.save()
 
@@ -71,8 +83,14 @@ def new_email():
 
     response['status'] = status
 
+
     return jsonify(response)
 
+@app.route('/get-num-requests', methods=["GET"])
+@cross_origin(origin='*',headers=['Content-Type','Authorization'])
+def get_num_requests():
+
+    return jsonify(cache)
 
 @app.route('/')
 def Welcome():
