@@ -17,6 +17,8 @@ from flask import Flask, jsonify, request
 from cloudant.client import Cloudant
 import json
 from flask_cors import CORS
+from flask.ext.cors import CORS, cross_origin
+
  
 if 'VCAP_SERVICES' in os.environ:
 
@@ -35,14 +37,15 @@ client.connect()
 app = Flask(__name__)
 CORS(app)
 
-@app.after_request
-def after_request(response):
-  response.headers.add('Access-Control-Allow-Origin', '*')
-  response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-  response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-  return response
+# @app.after_request
+# def after_request(response):
+#   response.headers.add('Access-Control-Allow-Origin', '*')
+#   response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+#   response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+#   return response
 
 @app.route('/new-email',  methods=['POST', 'OPTIONS'])
+@cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def new_email():
 
     app_type="test"
