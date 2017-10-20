@@ -41,7 +41,7 @@ CORS(app)
 @cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def new_email():
 
-    success = False
+    status = False
 
     response = {}
 
@@ -61,7 +61,7 @@ def new_email():
 
         doc.save()
 
-        success=True
+        status=True
 
         response = {"db_type":app_type, "address":email, "message":"Email %s added to DB" %email}
 
@@ -69,7 +69,7 @@ def new_email():
 
         print ('Error with request')
 
-    response['success'] = success
+    response['status'] = status
 
     return jsonify(response)
 
