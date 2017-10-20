@@ -37,33 +37,41 @@ client.connect()
 app = Flask(__name__)
 CORS(app)
 
-# @app.after_request
-# def after_request(response):
-#   response.headers.add('Access-Control-Allow-Origin', '*')
-#   response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-#   response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-#   return response
-
 @app.route('/new-email',  methods=['POST', 'OPTIONS'])
 @cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def new_email():
 
-    app_type="test"
-    
-    if 'Origin' in request.headers.keys() and 'kartees.com' in request.headers['Origin']:
-        app_type="prod"
+    success = False
 
-    email = request.form['email']
+    response = {}
 
-    db = client['%s_emails' %app_type]
+    try:
+        app_type="test"
+        
+        if 'Origin' in request.headers.keys() and 'kartees.com' in request.headers['Origin']:
+            app_type="prod"
 
-    doc = db["landing_page_emails"]
+        email = request.form['email']
 
-    doc['emails'].append(str(email))
+        db = client['%s_emails' %app_type]
 
-    doc.save()
+        doc = db["landing_page_emails"]
 
-    return jsonify({"db_type":app_type, "address":email, "message":"Email %s added to DB" %email})
+        doc['emails'].append(str(email))
+
+        doc.save()
+
+        success=True
+
+        response = {"db_type":app_type, "address":email, "message":"Email %s added to DB" %email}
+
+    except:
+
+        print ('Error with request')
+
+    response['success'] = success
+
+    return jsonify(response)
 
 
 @app.route('/')
