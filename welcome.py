@@ -49,37 +49,37 @@ def new_email():
 
     cache['requests']+=1
 
-    try:
-        app_type="test"
-        
-        if 'Origin' in request.headers.keys() and 'kartees.com' in request.headers['Origin']:
-            app_type="prod"
+    # try:
+    app_type="test"
+    
+    if 'Origin' in request.headers.keys() and 'prod' in request.headers['Origin']:
+        app_type="prod"
 
-        email = request.form['email']
+    email = request.form['email']
 
-        timestamp = request.form['timestamp']
+    timestamp = request.form['timestamp']
 
-        new_data = {"timestamp":timestamp,"email":str(email), "app_type":app_type}
+    new_data = {"timestamp":timestamp,"email":str(email), "app_type":app_type}
 
-        cache['data'].append(new_data)
+    cache['data'].append(new_data)
 
-        db = client['%s_emails' %app_type]
+    db = client['%s_emails' %app_type]
 
-        doc = db["landing_page_emails"]
+    doc = db["landing_page_emails"]
 
-        doc['emails'].append(new_data)
+    doc['emails'].append(new_data)
 
-        doc['requests']+=1
+    doc['requests']+=1
 
-        doc.save()
+    doc.save()
 
-        status=True
+    status=True
 
-        response = {"db_type":app_type, "address":email, "message":"Email %s added to DB" %email}
+    response = {"db_type":app_type, "address":email, "message":"Email %s added to DB" %email}
 
-    except:
+    # except:
 
-        print ('Error with request')
+       # print ('Error with request')
 
     response['status'] = status
 
