@@ -30,9 +30,7 @@ else:
     credentials = cloudant_credentials
 
 
-client = Cloudant(credentials['username'], credentials['password'], url="https://%s"%credentials['host'])
-# Connect to the account
-client.connect()
+
 
 app = Flask(__name__)
 CORS(app)
@@ -42,6 +40,10 @@ cache = {"requests":0, "data":[]}
 @app.route('/new-email',  methods=['POST', 'OPTIONS'])
 @cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def new_email():
+
+    client = Cloudant(credentials['username'], credentials['password'], url="https://%s"%credentials['host'])
+    # Connect to the account
+    client.connect()
 
     status = False
 
